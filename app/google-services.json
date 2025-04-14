@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "88047562617",
+    "project_id": "eco-cafe-connect",
+    "storage_bucket": "eco-cafe-connect.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88047562617:android:3d0dd7a73d9f4b7d4549a8",
+        "android_client_info": {
+          "package_name": "com.example.ecocafeconnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrd7Fe5gE-xn5fw8FfC0WGWSjwMs9h7lI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

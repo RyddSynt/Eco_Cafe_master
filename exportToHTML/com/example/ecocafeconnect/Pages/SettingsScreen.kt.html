@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>SettingsScreen.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SettingsScreen.kt</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">Pages</span>
+
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">foundation</span><span class="s2">.</span><span class="s1">Image</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">foundation</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">Arrangement</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">foundation</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">Box</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">foundation</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">Column</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">foundation</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">fillMaxSize</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">foundation</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.</span><span class="s1">size</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">material3</span><span class="s2">.</span><span class="s1">Text</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">material3</span><span class="s2">.</span><span class="s1">TextButton</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">runtime</span><span class="s2">.</span><span class="s1">Composable</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">runtime</span><span class="s2">.</span><span class="s1">LaunchedEffect</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">runtime</span><span class="s2">.</span><span class="s1">livedata</span><span class="s2">.</span><span class="s1">observeAsState</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">Alignment</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">Modifier</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">res</span><span class="s2">.</span><span class="s1">painterResource</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">text</span><span class="s2">.</span><span class="s1">font</span><span class="s2">.</span><span class="s1">FontWeight</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">unit</span><span class="s2">.</span><span class="s1">dp</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">unit</span><span class="s2">.</span><span class="s1">sp</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">navigation</span><span class="s2">.</span><span class="s1">NavController</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">AuthState</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">AuthViewModel</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">R</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">theme</span><span class="s2">.</span><span class="s1">Purple40</span>
+
+<span class="s1">@Composable</span>
+<span class="s0">fun </span><span class="s1">SettingsScreen</span><span class="s2">(</span><span class="s1">modifier: Modifier </span><span class="s2">= </span><span class="s1">Modifier</span><span class="s2">,</span><span class="s1">navController: NavController</span><span class="s2">,</span><span class="s1">authViewModel: AuthViewModel</span><span class="s2">) {</span>
+
+    <span class="s0">val </span><span class="s1">authState </span><span class="s2">= </span><span class="s1">authViewModel</span><span class="s2">.</span><span class="s1">authstate</span><span class="s2">.</span><span class="s1">observeAsState</span><span class="s2">()</span>
+
+    <span class="s1">LaunchedEffect</span><span class="s2">(</span><span class="s1">authState</span><span class="s2">.</span><span class="s1">value</span><span class="s2">) {</span>
+        <span class="s0">when</span><span class="s2">(</span><span class="s1">authState</span><span class="s2">.</span><span class="s1">value</span><span class="s2">){</span>
+            <span class="s0">is </span><span class="s1">AuthState</span><span class="s2">.</span><span class="s1">Unauthenticated </span><span class="s2">-&gt; </span><span class="s1">navController</span><span class="s2">.</span><span class="s1">navigate</span><span class="s2">(</span><span class="s3">&quot;login&quot;</span><span class="s2">)</span>
+            <span class="s0">else </span><span class="s2">-&gt; </span><span class="s1">Unit</span>
+        <span class="s2">}</span>
+
+    <span class="s2">}</span>
+    
+
+    <span class="s1">Box</span><span class="s2">(</span><span class="s1">modifier </span><span class="s2">= </span><span class="s1">Modifier</span><span class="s2">.</span><span class="s1">fillMaxSize</span><span class="s2">()) {</span>
+        <span class="s1">Column</span><span class="s2">(</span>
+            <span class="s1">modifier </span><span class="s2">= </span><span class="s1">Modifier</span>
+                <span class="s2">.</span><span class="s1">fillMaxSize</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">align</span><span class="s2">(</span><span class="s1">Alignment</span><span class="s2">.</span><span class="s1">Center</span><span class="s2">),</span>
+            <span class="s1">verticalArrangement </span><span class="s2">= </span><span class="s1">Arrangement</span><span class="s2">.</span><span class="s1">Center</span><span class="s2">, </span><span class="s1">horizontalAlignment </span><span class="s2">= </span><span class="s1">Alignment</span><span class="s2">.</span><span class="s1">CenterHorizontally</span>
+        <span class="s2">) {</span>
+            <span class="s1">Image</span><span class="s2">(</span>
+                <span class="s1">painter </span><span class="s2">= </span><span class="s1">painterResource</span><span class="s2">(</span><span class="s1">id </span><span class="s2">= </span><span class="s1">R</span><span class="s2">.</span><span class="s1">drawable</span><span class="s2">.</span><span class="s1">a</span><span class="s2">), </span><span class="s1">contentDescription </span><span class="s2">= </span><span class="s3">&quot;Login Image&quot;</span><span class="s2">,</span>
+                <span class="s1">modifier </span><span class="s2">= </span><span class="s1">Modifier</span><span class="s2">.</span><span class="s1">size</span><span class="s2">(</span><span class="s4">392</span><span class="s2">.</span><span class="s1">dp</span><span class="s2">)</span>
+            <span class="s2">)</span>
+
+            <span class="s1">Text</span><span class="s2">(</span><span class="s1">text </span><span class="s2">= </span><span class="s3">&quot; &quot;</span><span class="s2">)</span>
+            <span class="s1">Text</span><span class="s2">(</span><span class="s1">text </span><span class="s2">= </span><span class="s3">&quot;Gagi Man&quot;</span><span class="s2">, </span><span class="s1">fontSize </span><span class="s2">= </span><span class="s4">28</span><span class="s2">.</span><span class="s1">sp</span><span class="s2">, </span><span class="s1">fontWeight </span><span class="s2">= </span><span class="s1">FontWeight</span><span class="s2">.</span><span class="s1">Bold</span><span class="s2">)</span>
+
+            <span class="s1">TextButton</span><span class="s2">(</span><span class="s1">onClick </span><span class="s2">= {</span>
+                <span class="s1">authViewModel</span><span class="s2">.</span><span class="s1">signout</span><span class="s2">()</span>
+            <span class="s2">}) {</span>
+                <span class="s1">Text</span><span class="s2">(</span><span class="s1">text </span><span class="s2">= </span><span class="s3">&quot;Sign Out and Exit&quot;</span><span class="s2">)</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+<span class="s2">}</span>
+
+<span class="s1">@Composable</span>
+<span class="s0">fun </span><span class="s1">settings</span><span class="s2">(</span><span class="s1">modifier: Modifier </span><span class="s2">= </span><span class="s1">Modifier</span><span class="s2">) {</span>
+    
+    
+    
+<span class="s2">}</span></pre>
+</body>
+</html>

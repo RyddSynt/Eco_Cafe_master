@@ -1,0 +1,209 @@
+<html>
+<head>
+<title>AndroidManifest.xml</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d5b778;}
+.s1 { color: #bcbec4;}
+.s2 { color: #6aab73;}
+.s3 { color: #bcbec4;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+AndroidManifest.xml</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?</span><span class="s1">xml version</span><span class="s2">=&quot;1.0&quot; </span><span class="s1">encoding</span><span class="s2">=&quot;utf-8&quot;</span><span class="s0">?&gt;</span>
+<span class="s0">&lt;manifest </span><span class="s1">xmlns:android</span><span class="s2">=&quot;http://schemas.android.com/apk/res/android&quot;</span>
+    <span class="s1">package</span><span class="s2">=&quot;com.example.ecocafeconnect&quot;</span>
+    <span class="s1">android:versionCode</span><span class="s2">=&quot;1&quot;</span>
+    <span class="s1">android:versionName</span><span class="s2">=&quot;1.0&quot; </span><span class="s0">&gt;</span>
+
+    <span class="s0">&lt;uses-sdk</span>
+        <span class="s1">android:minSdkVersion</span><span class="s2">=&quot;24&quot;</span>
+        <span class="s1">android:targetSdkVersion</span><span class="s2">=&quot;34&quot; </span><span class="s0">/&gt;</span>
+
+    <span class="s0">&lt;uses-permission </span><span class="s1">android:name</span><span class="s2">=&quot;android.permission.INTERNET&quot; </span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;uses-permission </span><span class="s1">android:name</span><span class="s2">=&quot;android.permission.ACCESS_NETWORK_STATE&quot; </span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;uses-permission </span><span class="s1">android:name</span><span class="s2">=&quot;com.google.android.providers.gsf.permission.READ_GSERVICES&quot; </span><span class="s0">/&gt;</span>
+
+    <span class="s0">&lt;permission</span>
+        <span class="s1">android:name</span><span class="s2">=&quot;com.example.ecocafeconnect.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION&quot;</span>
+        <span class="s1">android:protectionLevel</span><span class="s2">=&quot;signature&quot; </span><span class="s0">/&gt;</span>
+
+    <span class="s0">&lt;uses-permission </span><span class="s1">android:name</span><span class="s2">=&quot;com.example.ecocafeconnect.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION&quot; </span><span class="s0">/&gt;</span>
+
+    <span class="s0">&lt;application</span>
+        <span class="s1">android:allowBackup</span><span class="s2">=&quot;true&quot;</span>
+        <span class="s1">android:appComponentFactory</span><span class="s2">=&quot;androidx.core.app.CoreComponentFactory&quot;</span>
+        <span class="s1">android:dataExtractionRules</span><span class="s2">=&quot;@xml/data_extraction_rules&quot;</span>
+        <span class="s1">android:debuggable</span><span class="s2">=&quot;true&quot;</span>
+        <span class="s1">android:extractNativeLibs</span><span class="s2">=&quot;false&quot;</span>
+        <span class="s1">android:fullBackupContent</span><span class="s2">=&quot;@xml/backup_rules&quot;</span>
+        <span class="s1">android:icon</span><span class="s2">=&quot;@mipmap/ic_launcher&quot;</span>
+        <span class="s1">android:label</span><span class="s2">=&quot;@string/app_name&quot;</span>
+        <span class="s1">android:roundIcon</span><span class="s2">=&quot;@mipmap/ic_launcher_round&quot;</span>
+        <span class="s1">android:supportsRtl</span><span class="s2">=&quot;true&quot;</span>
+        <span class="s1">android:testOnly</span><span class="s2">=&quot;true&quot;</span>
+        <span class="s1">android:theme</span><span class="s2">=&quot;@style/Theme.EcoCafeConnect&quot; </span><span class="s0">&gt;</span>
+        <span class="s0">&lt;activity</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;com.example.ecocafeconnect.MainActivity&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:label</span><span class="s2">=&quot;@string/app_name&quot;</span>
+            <span class="s1">android:theme</span><span class="s2">=&quot;@style/Theme.EcoCafeConnect&quot; </span><span class="s0">&gt;</span>
+            <span class="s0">&lt;intent-filter&gt;</span>
+                <span class="s0">&lt;action </span><span class="s1">android:name</span><span class="s2">=&quot;android.intent.action.MAIN&quot; </span><span class="s0">/&gt;</span>
+
+                <span class="s0">&lt;category </span><span class="s1">android:name</span><span class="s2">=&quot;android.intent.category.LAUNCHER&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;/intent-filter&gt;</span>
+        <span class="s0">&lt;/activity&gt;</span>
+        <span class="s0">&lt;activity</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;com.google.firebase.auth.internal.GenericIdpActivity&quot;</span>
+            <span class="s1">android:excludeFromRecents</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:launchMode</span><span class="s2">=&quot;singleTask&quot;</span>
+            <span class="s1">android:theme</span><span class="s2">=&quot;@android:style/Theme.Translucent.NoTitleBar&quot; </span><span class="s0">&gt;</span>
+            <span class="s0">&lt;intent-filter&gt;</span>
+                <span class="s0">&lt;action </span><span class="s1">android:name</span><span class="s2">=&quot;android.intent.action.VIEW&quot; </span><span class="s0">/&gt;</span>
+
+                <span class="s0">&lt;category </span><span class="s1">android:name</span><span class="s2">=&quot;android.intent.category.DEFAULT&quot; </span><span class="s0">/&gt;</span>
+                <span class="s0">&lt;category </span><span class="s1">android:name</span><span class="s2">=&quot;android.intent.category.BROWSABLE&quot; </span><span class="s0">/&gt;</span>
+
+                <span class="s0">&lt;data</span>
+                    <span class="s1">android:host</span><span class="s2">=&quot;firebase.auth&quot;</span>
+                    <span class="s1">android:path</span><span class="s2">=&quot;/&quot;</span>
+                    <span class="s1">android:scheme</span><span class="s2">=&quot;genericidp&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;/intent-filter&gt;</span>
+        <span class="s0">&lt;/activity&gt;</span>
+        <span class="s0">&lt;activity</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;com.google.firebase.auth.internal.RecaptchaActivity&quot;</span>
+            <span class="s1">android:excludeFromRecents</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:launchMode</span><span class="s2">=&quot;singleTask&quot;</span>
+            <span class="s1">android:theme</span><span class="s2">=&quot;@android:style/Theme.Translucent.NoTitleBar&quot; </span><span class="s0">&gt;</span>
+            <span class="s0">&lt;intent-filter&gt;</span>
+                <span class="s0">&lt;action </span><span class="s1">android:name</span><span class="s2">=&quot;android.intent.action.VIEW&quot; </span><span class="s0">/&gt;</span>
+
+                <span class="s0">&lt;category </span><span class="s1">android:name</span><span class="s2">=&quot;android.intent.category.DEFAULT&quot; </span><span class="s0">/&gt;</span>
+                <span class="s0">&lt;category </span><span class="s1">android:name</span><span class="s2">=&quot;android.intent.category.BROWSABLE&quot; </span><span class="s0">/&gt;</span>
+
+                <span class="s0">&lt;data</span>
+                    <span class="s1">android:host</span><span class="s2">=&quot;firebase.auth&quot;</span>
+                    <span class="s1">android:path</span><span class="s2">=&quot;/&quot;</span>
+                    <span class="s1">android:scheme</span><span class="s2">=&quot;recaptcha&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;/intent-filter&gt;</span>
+        <span class="s0">&lt;/activity&gt;</span>
+
+        <span class="s0">&lt;service</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;com.google.firebase.components.ComponentDiscoveryService&quot;</span>
+            <span class="s1">android:directBootAware</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;false&quot; </span><span class="s0">&gt;</span>
+            <span class="s0">&lt;meta-data</span>
+                <span class="s1">android:name</span><span class="s2">=&quot;com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar&quot;</span>
+                <span class="s1">android:value</span><span class="s2">=&quot;com.google.firebase.components.ComponentRegistrar&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;meta-data</span>
+                <span class="s1">android:name</span><span class="s2">=&quot;com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar&quot;</span>
+                <span class="s1">android:value</span><span class="s2">=&quot;com.google.firebase.components.ComponentRegistrar&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;meta-data</span>
+                <span class="s1">android:name</span><span class="s2">=&quot;com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar&quot;</span>
+                <span class="s1">android:value</span><span class="s2">=&quot;com.google.firebase.components.ComponentRegistrar&quot; </span><span class="s0">/&gt;</span>
+        <span class="s0">&lt;/service&gt;</span>
+
+        <span class="s0">&lt;activity</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;androidx.compose.ui.tooling.PreviewActivity&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;true&quot; </span><span class="s0">/&gt;</span>
+
+        <span class="s0">&lt;service</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;androidx.credentials.playservices.CredentialProviderMetadataHolder&quot;</span>
+            <span class="s1">android:enabled</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;false&quot; </span><span class="s0">&gt;</span>
+            <span class="s0">&lt;meta-data</span>
+                <span class="s1">android:name</span><span class="s2">=&quot;androidx.credentials.CREDENTIAL_PROVIDER_KEY&quot;</span>
+                <span class="s1">android:value</span><span class="s2">=&quot;androidx.credentials.playservices.CredentialProviderPlayServicesImpl&quot; </span><span class="s0">/&gt;</span>
+        <span class="s0">&lt;/service&gt;</span>
+
+        <span class="s0">&lt;activity</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;androidx.credentials.playservices.HiddenActivity&quot;</span>
+            <span class="s1">android:configChanges</span><span class="s2">=&quot;orientation|screenSize|screenLayout|keyboardHidden&quot;</span>
+            <span class="s1">android:enabled</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;false&quot;</span>
+            <span class="s1">android:fitsSystemWindows</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:theme</span><span class="s2">=&quot;@style/Theme.Hidden&quot; </span><span class="s0">&gt;</span>
+        <span class="s0">&lt;/activity&gt;</span>
+        <span class="s0">&lt;activity</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;com.google.android.gms.auth.api.signin.internal.SignInHubActivity&quot;</span>
+            <span class="s1">android:excludeFromRecents</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;false&quot;</span>
+            <span class="s1">android:theme</span><span class="s2">=&quot;@android:style/Theme.Translucent.NoTitleBar&quot; </span><span class="s0">/&gt;</span>
+        <span class="s4">&lt;!--</span>
+            <span class="s4">Service handling Google Sign-In user revocation. For apps that do not integrate with 
+            Google Sign-In, this service will never be started. 
+        --&gt;</span>
+        <span class="s0">&lt;service</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;com.google.android.gms.auth.api.signin.RevocationBoundService&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:permission</span><span class="s2">=&quot;com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION&quot;</span>
+            <span class="s1">android:visibleToInstantApps</span><span class="s2">=&quot;true&quot; </span><span class="s0">/&gt;</span>
+
+        <span class="s0">&lt;provider</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;com.google.firebase.provider.FirebaseInitProvider&quot;</span>
+            <span class="s1">android:authorities</span><span class="s2">=&quot;com.example.ecocafeconnect.firebaseinitprovider&quot;</span>
+            <span class="s1">android:directBootAware</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;false&quot;</span>
+            <span class="s1">android:initOrder</span><span class="s2">=&quot;100&quot; </span><span class="s0">/&gt;</span>
+
+        <span class="s0">&lt;activity</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;com.google.android.gms.common.api.GoogleApiActivity&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;false&quot;</span>
+            <span class="s1">android:theme</span><span class="s2">=&quot;@android:style/Theme.Translucent.NoTitleBar&quot; </span><span class="s0">/&gt;</span>
+
+        <span class="s0">&lt;provider</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;androidx.startup.InitializationProvider&quot;</span>
+            <span class="s1">android:authorities</span><span class="s2">=&quot;com.example.ecocafeconnect.androidx-startup&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;false&quot; </span><span class="s0">&gt;</span>
+            <span class="s0">&lt;meta-data</span>
+                <span class="s1">android:name</span><span class="s2">=&quot;androidx.emoji2.text.EmojiCompatInitializer&quot;</span>
+                <span class="s1">android:value</span><span class="s2">=&quot;androidx.startup&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;meta-data</span>
+                <span class="s1">android:name</span><span class="s2">=&quot;androidx.lifecycle.ProcessLifecycleInitializer&quot;</span>
+                <span class="s1">android:value</span><span class="s2">=&quot;androidx.startup&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;meta-data</span>
+                <span class="s1">android:name</span><span class="s2">=&quot;androidx.profileinstaller.ProfileInstallerInitializer&quot;</span>
+                <span class="s1">android:value</span><span class="s2">=&quot;androidx.startup&quot; </span><span class="s0">/&gt;</span>
+        <span class="s0">&lt;/provider&gt;</span>
+
+        <span class="s0">&lt;meta-data</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;com.google.android.gms.version&quot;</span>
+            <span class="s1">android:value</span><span class="s2">=&quot;@integer/google_play_services_version&quot; </span><span class="s0">/&gt;</span>
+
+        <span class="s0">&lt;activity</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;androidx.activity.ComponentActivity&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;true&quot; </span><span class="s0">/&gt;</span>
+
+        <span class="s0">&lt;receiver</span>
+            <span class="s1">android:name</span><span class="s2">=&quot;androidx.profileinstaller.ProfileInstallReceiver&quot;</span>
+            <span class="s1">android:directBootAware</span><span class="s2">=&quot;false&quot;</span>
+            <span class="s1">android:enabled</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:exported</span><span class="s2">=&quot;true&quot;</span>
+            <span class="s1">android:permission</span><span class="s2">=&quot;android.permission.DUMP&quot; </span><span class="s0">&gt;</span>
+            <span class="s0">&lt;intent-filter&gt;</span>
+                <span class="s0">&lt;action </span><span class="s1">android:name</span><span class="s2">=&quot;androidx.profileinstaller.action.INSTALL_PROFILE&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;/intent-filter&gt;</span>
+            <span class="s0">&lt;intent-filter&gt;</span>
+                <span class="s0">&lt;action </span><span class="s1">android:name</span><span class="s2">=&quot;androidx.profileinstaller.action.SKIP_FILE&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;/intent-filter&gt;</span>
+            <span class="s0">&lt;intent-filter&gt;</span>
+                <span class="s0">&lt;action </span><span class="s1">android:name</span><span class="s2">=&quot;androidx.profileinstaller.action.SAVE_PROFILE&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;/intent-filter&gt;</span>
+            <span class="s0">&lt;intent-filter&gt;</span>
+                <span class="s0">&lt;action </span><span class="s1">android:name</span><span class="s2">=&quot;androidx.profileinstaller.action.BENCHMARK_OPERATION&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;/intent-filter&gt;</span>
+        <span class="s0">&lt;/receiver&gt;</span>
+    <span class="s0">&lt;/application&gt;</span>
+
+<span class="s0">&lt;/manifest&gt;</span></pre>
+</body>
+</html>

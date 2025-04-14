@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>MyAppNavigation.kt</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MyAppNavigation.kt</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span>
+
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">runtime</span><span class="s2">.</span><span class="s1">Composable</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">Modifier</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">navigation</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">NavHost</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">navigation</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">composable</span>
+<span class="s1">import androidx</span><span class="s2">.</span><span class="s1">navigation</span><span class="s2">.</span><span class="s1">compose</span><span class="s2">.</span><span class="s1">rememberNavController</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">Pages</span><span class="s2">.</span><span class="s1">HomePage</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">Pages</span><span class="s2">.</span><span class="s1">HomePage</span><span class="s2">.</span><span class="s1">DetailsTips</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">Pages</span><span class="s2">.</span><span class="s1">HomePage</span><span class="s2">.</span><span class="s1">LoyaltyProgram</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">Pages</span><span class="s2">.</span><span class="s1">HomePage</span><span class="s2">.</span><span class="s1">WasteTracker</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">Pages</span><span class="s2">.</span><span class="s1">LoginScreen</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">Pages</span><span class="s2">.</span><span class="s1">RSTips</span><span class="s2">.</span><span class="s1">TipsPage</span>
+
+
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">Pages</span><span class="s2">.</span><span class="s1">SignupPage</span>
+<span class="s1">import com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">ecocafeconnect</span><span class="s2">.</span><span class="s1">Pages</span><span class="s2">.</span><span class="s1">settings</span>
+
+
+<span class="s1">@Composable</span>
+<span class="s0">fun </span><span class="s1">MyAppNavigation</span><span class="s2">(</span><span class="s1">modifier: Modifier </span><span class="s2">= </span><span class="s1">Modifier</span><span class="s2">,</span><span class="s1">authViewModel: AuthViewModel</span><span class="s2">) {</span>
+    <span class="s0">val </span><span class="s1">navController </span><span class="s2">= </span><span class="s1">rememberNavController</span><span class="s2">()</span>
+
+    <span class="s1">NavHost</span><span class="s2">(</span><span class="s1">navController </span><span class="s2">= </span><span class="s1">navController</span><span class="s2">, </span><span class="s1">startDestination </span><span class="s2">= </span><span class="s3">&quot;login&quot;</span><span class="s2">, </span><span class="s1">builder </span><span class="s2">={</span>
+        <span class="s1">composable</span><span class="s2">(</span><span class="s3">&quot;login&quot;</span><span class="s2">){</span>
+            <span class="s1">LoginScreen</span><span class="s2">(</span><span class="s1">modifier</span><span class="s2">,</span><span class="s1">navController</span><span class="s2">,</span><span class="s1">authViewModel</span><span class="s2">)</span>
+        <span class="s2">}</span>
+        <span class="s1">composable</span><span class="s2">(</span><span class="s3">&quot;signup&quot;</span><span class="s2">){</span>
+            <span class="s1">SignupPage</span><span class="s2">(</span><span class="s1">modifier</span><span class="s2">,</span><span class="s1">navController</span><span class="s2">,</span><span class="s1">authViewModel</span><span class="s2">)</span>
+        <span class="s2">}</span>
+        <span class="s1">composable</span><span class="s2">(</span><span class="s3">&quot;settings&quot;</span><span class="s2">){</span>
+            <span class="s1">settings</span><span class="s2">()</span>
+        <span class="s2">}</span>
+        <span class="s1">composable</span><span class="s2">(</span><span class="s3">&quot;home2&quot;</span><span class="s2">){</span>
+            <span class="s1">LearnNavDrawer</span><span class="s2">()</span>
+        <span class="s2">}</span>
+        <span class="s1">composable</span><span class="s2">(</span><span class="s3">&quot;waste&quot;</span><span class="s2">){</span>
+            <span class="s1">WasteTracker</span><span class="s2">(</span><span class="s1">modifier</span><span class="s2">,</span><span class="s1">navController</span><span class="s2">,</span><span class="s1">authViewModel</span><span class="s2">)</span>
+        <span class="s2">}</span>
+        <span class="s1">composable</span><span class="s2">(</span><span class="s3">&quot;loyalty&quot;</span><span class="s2">){</span>
+            <span class="s1">LoyaltyProgram</span><span class="s2">(</span><span class="s1">modifier</span><span class="s2">,</span><span class="s1">navController</span><span class="s2">,</span><span class="s1">authViewModel</span><span class="s2">)</span>
+        <span class="s2">}</span>
+        <span class="s1">composable</span><span class="s2">(</span><span class="s3">&quot;tips&quot;</span><span class="s2">){</span>
+            <span class="s1">TipsPage</span><span class="s2">(</span><span class="s1">modifier</span><span class="s2">,</span><span class="s1">navController</span><span class="s2">,</span><span class="s1">authViewModel</span><span class="s2">)</span>
+        <span class="s2">}</span>
+        <span class="s1">composable</span><span class="s2">(</span><span class="s3">&quot;details&quot;</span><span class="s2">){</span>
+            <span class="s1">DetailsTips</span><span class="s2">(</span><span class="s1">modifier</span><span class="s2">,</span><span class="s1">navController</span><span class="s2">,</span><span class="s1">authViewModel</span><span class="s2">)</span>
+        <span class="s2">}</span>
+        <span class="s1">composable</span><span class="s2">(</span><span class="s3">&quot;homepage&quot;</span><span class="s2">){</span>
+            <span class="s1">HomePage</span><span class="s2">(</span><span class="s1">modifier</span><span class="s2">,</span><span class="s1">navController</span><span class="s2">,</span><span class="s1">authViewModel</span><span class="s2">)</span>
+        <span class="s2">}</span>
+
+
+    <span class="s2">} )</span>
+    
+<span class="s2">}</span></pre>
+</body>
+</html>
