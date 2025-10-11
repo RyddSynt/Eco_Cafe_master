@@ -27,6 +27,7 @@
     import androidx.compose.material3.Text
     import androidx.compose.material3.TextButton
     import androidx.compose.runtime.Composable
+    import androidx.compose.runtime.DisposableEffect
     import androidx.compose.runtime.LaunchedEffect
     import androidx.compose.runtime.getValue
     import androidx.compose.runtime.livedata.observeAsState
@@ -82,17 +83,23 @@
             }
         }
 
-        LaunchedEffect(userId) {
-            userId?.let { id ->
-                db.collection("users").document(id).get().addOnSuccessListener { document ->
-                    points = (document["points"] as? Long)?.toInt() ?: 0
-                    progress = points / 100f
-                }
+        DisposableEffect(userId) {
+            val listenerRegistration = userId?.let { id ->
+                db.collection("users").document(id)
+                    .addSnapshotListener { snapshot, error ->
+                        if (error != null) {
+                            Log.e("LoyaltyProgram", "Listen failed", error)
+                            return@addSnapshotListener
+                        }
+                        if (snapshot != null && snapshot.exists()) {
+                            points = (snapshot.getLong("points") ?: 0L).toInt()
+                            progress = points / 100f
+                        }
+                    }
             }
-        }
-
-        LaunchedEffect(points) {
-            progress = points / 100f
+            onDispose {
+                listenerRegistration?.remove()
+            }
         }
 
         Column(
@@ -132,11 +139,10 @@
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Check if the email is admin and display the appropriate button
             if (email == "admin@gmail.com") {
                 Button(
                     onClick = {
-                        val intent = Intent(context, QRScannerActivity::class.java) // Assuming QRScanner is your scanner activity
+                        val intent = Intent(context, QRScannerActivity::class.java)
                         context.startActivity(intent)
                     }
                 ) {
@@ -148,16 +154,13 @@
                         userId?.let { id ->
                             Toast.makeText(context, "User ID: $id", Toast.LENGTH_SHORT).show()
                             val intent = Intent(context, QRGenerator::class.java)
-                            intent.putExtra("USER_ID", id) // Pass USER_ID to generator
+                            intent.putExtra("USER_ID", id)
                             context.startActivity(intent)
                         } ?: Toast.makeText(context, "User ID not found", Toast.LENGTH_SHORT).show()
                     },
-
                 ) {
                     Text(text = "Generate QR")
                 }
-
-
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -177,124 +180,30 @@
         }
     }
 
-    fun updatePoints(context: Context, userId: String?, pointsToAdd: Int, onPointsUpdated: (Int) -> Unit) {
-        val db = FirebaseFirestore.getInstance()
-        userId?.let { id ->
-            db.collection("users").document(id).get().addOnSuccessListener { document ->
-                if (document.exists()) {
-                    // Document exists, update it
-                    db.collection("users").document(id).update("points", FieldValue.increment(pointsToAdd.toLong()))
-                        .addOnSuccessListener {
-                            // Document updated successfully
-                            showPointsAddedNotification(context, "Points added!")
-                            // Retrieve updated points
-                            db.collection("users").document(id).get().addOnSuccessListener { document ->
-                                val newPoints = (document["points"] as? Long)?.toInt() ?: 0
-                                onPointsUpdated(newPoints)
-                            }
-                        }
-                        .addOnFailureListener { exception ->
-                            // Document update failed
-                            Log.e("Error", "Failed to update points: ${exception.message}")
-                        }
-                } else {
-                    // Document does not exist, create it
-                    val user = hashMapOf(
-                        "points" to pointsToAdd.toLong()
-                    )
-                    db.collection("users").document(id).set(user)
-                        .addOnSuccessListener {
-                            // Document created successfully
-                            showPointsAddedNotification(context, "Points added!")
-                            onPointsUpdated(pointsToAdd)
-                        }
-                        .addOnFailureListener { exception ->
-                            // Document creation failed
-                            Log.e("Error", "Failed to create user document: ${exception.message}")
-                        }
-                }
-            }
-        }
-    }
-
-    // Function to check points and send reward notifications
-    fun checkAndNotifyRewards(context: Context, points: Int) {
-        when {
-            points >= 100 -> showRewardNotification(context, "Reward: 100 points reached!")
-            points >= 75 -> showRewardNotification(context, "Reward: 75 points reached!")
-            points >= 50 -> showRewardNotification(context, "Reward: 50 points reached!")
-            points >= 25 -> showRewardNotification(context, "Reward: 25 points reached!")
-        }
-    }
-
-    // Function to show points added notification
-    fun showPointsAddedNotification(context: Context, message: String) {
-        val notificationManager = context.getSystemService(NotificationManager::class.java)
-        val notificationIntent = Intent(context, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE)
-
-        val notification = NotificationCompat.Builder(context, "LoyaltyProgramChannel")
-            .setContentTitle("Loyalty Program")
-            .setContentText(message)
-            .setSmallIcon(R.drawable.ecocafe)
-            .setContentIntent(pendingIntent)
-            .build()
-
-        notificationManager?.notify(1, notification)
-    }
-
-    // Function to show reward notification
-    fun showRewardNotification(context: Context, message: String) {
-        val notificationManager = context.getSystemService(NotificationManager::class.java)
-        val notificationIntent = Intent(context, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent,
-            PendingIntent.FLAG_IMMUTABLE)
-
-        val notification = NotificationCompat.Builder(context, "LoyaltyProgramChannel")
-            .setContentTitle("Loyalty Program")
-            .setContentText(message)
-            .setSmallIcon(R.drawable.ecocafe)
-            .setContentIntent(pendingIntent)
-            .build()
-
-        notificationManager?.notify(2, notification)
-    }
-
     @Composable
     fun CircularProgressBar(
         percentage: Float,
         radius: Dp = 80.dp,
         animationDuration: Int = 1000,
     ) {
-        var animFinished by remember { mutableStateOf(false) }
-        val progress = animateFloatAsState(
+        val animatedProgress by animateFloatAsState(
             targetValue = percentage,
             animationSpec = tween(durationMillis = animationDuration)
         )
 
         Canvas(modifier = Modifier.size(radius * 2)) {
-            val canvasWidth = size.width
-            val canvasHeight = size.height
-
-            val backgroundCircle = Color.LightGray
-            val progressCircle = Color(0xFF7A288A)
-
-            // Draw background circle
             drawCircle(
-                color = backgroundCircle,
+                color = Color.LightGray,
                 radius = radius.toPx(),
-                style = Stroke(width = 12f, cap = StrokeCap.Round)
+                style = Stroke(width = 20f, cap = StrokeCap.Round)
             )
-
-            // Draw progress circle
             drawArc(
-                color = progressCircle,
+                color = Color(0xFF7A288A),
                 startAngle = -90f,
-                sweepAngle = 360 * progress.value,
+                sweepAngle = animatedProgress * 360,
                 useCenter = false,
-                style = Stroke(width = 12f, cap = StrokeCap.Round),
-                size = androidx.compose.ui.geometry.Size(canvasWidth, canvasHeight)
+                style = Stroke(width = 20f, cap = StrokeCap.Round),
+                size = size
             )
         }
     }
