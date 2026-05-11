@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -14,7 +15,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -34,7 +35,8 @@ fun SettingsScreen(
     authViewModel: AuthViewModel,
     context: Context
 ) {
-    val authState by authViewModel.authstate.observeAsState()
+    // FIXED: Use authState (capital S) instead of authstate
+    val authState by authViewModel.authState.collectAsState()
 
     // SharedPreferences initialization
     val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
@@ -62,11 +64,14 @@ fun SettingsScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = R.drawable.a), contentDescription = "Settings Image",
+                painter = painterResource(id = R.drawable.a),
+                contentDescription = "Settings Image",
                 modifier = Modifier.size(392.dp)
             )
 
             Text(text = "Settings", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+
+            Spacer(modifier = Modifier.size(16.dp))
 
             TextButton(onClick = {
                 // Sign out and clear shared preferences
@@ -78,7 +83,7 @@ fun SettingsScreen(
                 // Close the app
                 activity?.finishAffinity()
             }) {
-                Text(text = "Sign Out and Exit")
+                Text(text = "Sign Out and Exit", fontSize = 18.sp)
             }
         }
     }

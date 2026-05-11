@@ -64,5 +64,8 @@ fun MyAppNavigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel)
         composable("stats") {
             StatisticsScreen(modifier, navController, WasteEntryListViewModel(), authViewModel)
         }
+        composable("home2") {
+            LearnNavDrawer(navController)
+        }
     }
 }

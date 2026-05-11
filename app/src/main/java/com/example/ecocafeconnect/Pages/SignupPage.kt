@@ -12,13 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,7 +37,11 @@ import com.example.ecocafeconnect.AuthViewModel
 import com.example.ecocafeconnect.R
 
 @Composable
-fun SignupPage(modifier: Modifier = Modifier,navController: NavController,authViewModel: AuthViewModel) {
+fun SignupPage(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    authViewModel: AuthViewModel
+) {
     var email by remember {
         mutableStateOf("")
     }
@@ -44,17 +49,28 @@ fun SignupPage(modifier: Modifier = Modifier,navController: NavController,authVi
         mutableStateOf("")
     }
 
-    val authState = authViewModel.authstate.observeAsState()
+    // FIXED: Use authState instead of authstate
+    val authState by authViewModel.authState.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(authState.value) {
-        when(authState.value){
-            is AuthState.Authenticated -> navController.navigate("home2")
-            is AuthState.Error -> Toast.makeText(context,
-                (authState.value as AuthState.Error).message,Toast.LENGTH_SHORT).show()
+    // FIXED: Use authState directly instead of authState.value
+    LaunchedEffect(authState) {
+        when (authState) {
+            is AuthState.Authenticated -> {
+                Toast.makeText(context, "Sign up successful!", Toast.LENGTH_SHORT).show()
+                navController.navigate("home2") {
+                    popUpTo("signup") { inclusive = true }
+                }
+            }
+            is AuthState.Error -> {
+                Toast.makeText(
+                    context,
+                    (authState as AuthState.Error).message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
             else -> Unit
         }
-        
     }
 
     Column(
@@ -63,7 +79,8 @@ fun SignupPage(modifier: Modifier = Modifier,navController: NavController,authVi
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.a), contentDescription = "Login Image",
+            painter = painterResource(id = R.drawable.a),
+            contentDescription = "Sign Up Image",
             modifier = Modifier.size(392.dp)
         )
 
@@ -75,34 +92,42 @@ fun SignupPage(modifier: Modifier = Modifier,navController: NavController,authVi
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(value = email, onValueChange = {
-            email = it
-        }, label = {
-            Text(text = "Email address")
-        })
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text(text = "Email address") },
+            enabled = authState != AuthState.Loading
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedTextField(value = password, onValueChange = {
-            password = it
-        }, label = {
-            Text(text = "Password")
-        }, visualTransformation = PasswordVisualTransformation())
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text(text = "Password") },
+            visualTransformation = PasswordVisualTransformation(),
+            enabled = authState != AuthState.Loading
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(onClick = {
-            authViewModel.signup(email,password)
-        }) {
-            Text(text = "Create Account")
-
+        Button(
+            onClick = {
+                authViewModel.signup(email, password)
+            },
+            enabled = authState != AuthState.Loading
+        ) {
+            if (authState == AuthState.Loading) {
+                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+            } else {
+                Text(text = "Create Account")
+            }
         }
 
         TextButton(onClick = {
             navController.navigate("login")
         }) {
             Text(text = "Already have an account? Login here")
-
         }
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -111,21 +136,25 @@ fun SignupPage(modifier: Modifier = Modifier,navController: NavController,authVi
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Image(painter = painterResource(id = R.drawable.facebook),
+            Image(
+                painter = painterResource(id = R.drawable.facebook),
                 contentDescription = "facebook",
                 modifier = Modifier
                     .size(60.dp)
                     .clickable {
+                        Toast.makeText(context, "Facebook login coming soon!", Toast.LENGTH_SHORT).show()
+                    }
+            )
 
-                    })
-
-            Image(painter = painterResource(id = R.drawable.google), contentDescription = "google",
+            Image(
+                painter = painterResource(id = R.drawable.google),
+                contentDescription = "google",
                 modifier = Modifier
                     .size(60.dp)
                     .clickable {
-
-                    })
-
+                        Toast.makeText(context, "Google login coming soon!", Toast.LENGTH_SHORT).show()
+                    }
+            )
         }
     }
 }

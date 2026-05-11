@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -16,9 +16,11 @@
         android:theme="@style/Theme.EcoCafeConnect"
         tools:targetApi="31">
 
+
         <activity android:name=".Pages.HomePage.QRGenerator"/>
         <activity
             android:name=".Pages.HomePage.QRScannerActivity"
+
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:stateNotNeeded="true"
             android:windowSoftInputMode="stateAlwaysHidden"

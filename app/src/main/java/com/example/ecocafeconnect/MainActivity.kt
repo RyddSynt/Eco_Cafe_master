@@ -15,28 +15,35 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.ecocafeconnect.ui.theme.EcoCafeConnectTheme
 import com.google.firebase.FirebaseApp
-import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : ComponentActivity() {
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Initialize Firebase
         FirebaseApp.initializeApp(this)
-        createNotificationChannel(this)
+
+        createNotificationChannel()
         enableEdgeToEdge()
-        val db = FirebaseFirestore.getInstance()
+
         val authViewModel: AuthViewModel by viewModels()
+
         setContent {
             EcoCafeConnectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MyAppNavigation(modifier = Modifier.padding(innerPadding), authViewModel = authViewModel)
+                    MyAppNavigation(
+                        modifier = Modifier.padding(innerPadding),
+                        authViewModel = authViewModel
+                    )
                 }
             }
         }
     }
 
-
-    private fun createNotificationChannel(mainActivity: MainActivity) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 "LoyaltyProgramChannel",
@@ -50,6 +57,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-

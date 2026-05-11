@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "88047562617",
     "project_id": "eco-cafe-connect",
-    "storage_bucket": "eco-cafe-connect.appspot.com"
+    "storage_bucket": "eco-cafe-connect.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +12,28 @@
           "package_name": "com.example.ecocafeconnect"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "88047562617-99q6k2msma5724n9objk32uvbhej12sv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ecocafeconnect",
+            "certificate_hash": "6fd72fa4569dd4278ca535b17905de6fff980a55"
+          }
+        },
+        {
+          "client_id": "88047562617-o90luhs335n1tneo36rv2shs93u3b7ki.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ecocafeconnect",
+            "certificate_hash": "a4a8e4e31a64751382e6057ee5bbf616e366bb2b"
+          }
+        },
+        {
+          "client_id": "88047562617-ea60ktf8hra181t7q0s16il1jrr8m2so.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBrd7Fe5gE-xn5fw8FfC0WGWSjwMs9h7lI"
@@ -20,7 +41,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88047562617-ea60ktf8hra181t7q0s16il1jrr8m2so.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

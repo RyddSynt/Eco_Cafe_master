@@ -1,5 +1,6 @@
 package com.example.ecocafeconnect.Pages.HomePage
 
+import android.graphics.Paint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
@@ -7,14 +8,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,28 +23,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import com.example.ecocafeconnect.AuthViewModel
-import com.example.ecocafeconnect.wasteTracker.WasteEntry
-import com.example.ecocafeconnect.wasteTracker.WasteEntryListViewModel
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.times
+import androidx.navigation.NavController
+import com.example.ecocafeconnect.AuthViewModel
+import com.example.ecocafeconnect.wasteTracker.WasteEntry
+import com.example.ecocafeconnect.wasteTracker.WasteEntryListViewModel
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
 
@@ -64,82 +59,77 @@ fun TotalAmountGraph(
 
         // Draw total amount label
         val totalAmountBarX = barSpacing.toPx() / 2
+        val paint = Paint().apply {
+            color = android.graphics.Color.BLACK
+            textSize = 12.sp.toPx()
+        }
         drawContext.canvas.nativeCanvas.drawText(
             String.format("Total Amount: %.2f", totalAmount),
             totalAmountBarX,
-            40f, // adjust y-coordinate to avoid overlap
-            android.graphics.Paint().apply {
-                color = android.graphics.Color.BLACK
-                textSize = 12.sp.toPx()
-            }
+            40f,
+            paint
         )
 
         // Draw total amount bar
-        val totalAmountBarHeight = (totalAmount / maxAmount) * (size.height - 150)
+        val graphHeight = size.height - 150
+        val totalAmountBarHeight = if (maxAmount > 0) {
+            ((totalAmount / maxAmount) * graphHeight).toFloat()
+        } else 0f
         val totalAmountBarY = size.height - totalAmountBarHeight - 100
 
-        // Define a gradient brush for the total amount bar
         val totalAmountGradient = Brush.linearGradient(
-            colors = listOf(Color(0xFF3B0B59), Color(0xFF5C005C)), // Dark Violet gradient
+            colors = listOf(Color(0xFF3B0B59), Color(0xFF5C005C)),
             start = Offset(0f, 0f),
             end = Offset(size.width.toFloat(), 0f)
         )
 
         drawRect(
             brush = totalAmountGradient,
-            topLeft = Offset(totalAmountBarX, totalAmountBarY.toFloat()),
-            size = Size(barWidth.toPx(), totalAmountBarHeight.toFloat())
+            topLeft = Offset(totalAmountBarX, totalAmountBarY),
+            size = Size(barWidth.toPx(), totalAmountBarHeight)
         )
 
-        // Draw total amount label (again, below the bar)
+        // Draw total amount label below the bar
         drawContext.canvas.nativeCanvas.drawText(
             "Total Amount",
             totalAmountBarX,
             size.height - 20,
-            android.graphics.Paint().apply {
-                color = android.graphics.Color.BLACK
-                textSize = 12.sp.toPx()
-            }
+            paint
         )
 
         // Draw average amount label
-        val averageAmountBarX = (barWidth + barSpacing).toPx() + barSpacing.toPx() / 2
+        val averageAmountBarX = (barWidth.toPx() + barSpacing.toPx()) + (barSpacing.toPx() / 2)
         drawContext.canvas.nativeCanvas.drawText(
             String.format("Average Amount: %.2f", averageAmount),
             averageAmountBarX,
-            40f, // adjust y-coordinate to avoid overlap
-            android.graphics.Paint().apply {
-                color = android.graphics.Color.BLACK
-                textSize = 12.sp.toPx()
-            }
+            40f,
+            paint
         )
 
         // Draw average amount bar
-        val averageAmountBarHeight = (averageAmount / maxAmount) * (size.height - 150)
+        val averageAmountBarHeight = if (maxAmount > 0) {
+            ((averageAmount / maxAmount) * graphHeight).toFloat()
+        } else 0f
         val averageAmountBarY = size.height - averageAmountBarHeight - 100
 
-        // Define a gradient brush for the average amount bar
         val averageAmountGradient = Brush.linearGradient(
-            colors = listOf(Color(0xFF4B0082), Color(0xFF6c5ce7)), // Indigo gradient
+            colors = listOf(Color(0xFF4B0082), Color(0xFF6c5ce7)),
             start = Offset(0f, 0f),
             end = Offset(size.width.toFloat(), 0f)
         )
 
         drawRect(
             brush = averageAmountGradient,
-            topLeft = Offset(averageAmountBarX, averageAmountBarY.toFloat()),
-            size = Size(barWidth.toPx(), averageAmountBarHeight.toFloat())
+            topLeft = Offset(averageAmountBarX, averageAmountBarY),
+            size = Size(barWidth.toPx(), averageAmountBarHeight)
         )
 
-        // Draw average amount label (again, below the bar)
+        // Draw average amount label below the bar
         drawContext.canvas.nativeCanvas.drawText(
             "Average Amount",
             averageAmountBarX,
             size.height - 20,
-            android.graphics.Paint().apply {
-                color = android.graphics.Color.BLACK
-                textSize = 12.sp.toPx()
-            }
+            paint
         )
     }
 }
@@ -155,25 +145,33 @@ fun MonthlyWasteGraph(
         val barWidth = 50.dp
         val barSpacing = 50.dp
 
-        val monthlyAmounts = monthlyWasteEntries.mapValues { it.value.sumOf { it.amount } }
-        val maxMonthlyAmount = monthlyAmounts.values.maxOfOrNull { it } ?: 0.0
+        val monthlyAmounts = monthlyWasteEntries.mapValues { it.value.sumOf { entry -> entry.amount } }
+        val maxMonthlyAmount = monthlyAmounts.values.maxOrNull() ?: 0.0
+
+        val paint = Paint().apply {
+            color = android.graphics.Color.BLACK
+            textSize = 12.sp.toPx()
+        }
 
         monthlyAmounts.toList().forEachIndexed { index, (month, amount) ->
-            val barHeight = (amount / maxMonthlyAmount) * (size.height - 250)
-            val barX = (index * (barWidth + barSpacing)).toPx() + (barSpacing.toPx() / 2)
+            val graphHeight = size.height - 250
+            val barHeight = if (maxMonthlyAmount > 0) {
+                ((amount / maxMonthlyAmount) * graphHeight).toFloat()
+            } else 0f
+            // FIXED: Line 162 - Properly convert index to Float
+            val barX = (index.toFloat() * (barWidth.toPx() + barSpacing.toPx())) + (barSpacing.toPx() / 2)
             val barY = size.height - barHeight - 200
 
-            // Define a gradient brush for the monthly waste bar
             val monthlyWasteGradient = Brush.linearGradient(
-                colors = listOf(Color(0xFFC7B8EA), Color(0xFF7A288A)), // Violet gradient
+                colors = listOf(Color(0xFFC7B8EA), Color(0xFF7A288A)),
                 start = Offset(0f, 0f),
                 end = Offset(size.width.toFloat(), 0f)
             )
 
             drawRect(
                 brush = monthlyWasteGradient,
-                topLeft = Offset(barX, barY.toFloat()),
-                size = Size(barWidth.toPx(), barHeight.toFloat())
+                topLeft = Offset(barX, barY),
+                size = Size(barWidth.toPx(), barHeight)
             )
 
             // Draw amount label
@@ -181,10 +179,7 @@ fun MonthlyWasteGraph(
                 String.format("%.2f", amount),
                 barX,
                 (barY - 30).toFloat(),
-                android.graphics.Paint().apply {
-                    color = android.graphics.Color.BLACK
-                    textSize = 12.sp.toPx()
-                }
+                paint
             )
 
             // Draw month label
@@ -192,10 +187,7 @@ fun MonthlyWasteGraph(
                 month,
                 barX,
                 size.height - 120,
-                android.graphics.Paint().apply {
-                    color = android.graphics.Color.BLACK
-                    textSize = 12.sp.toPx()
-                }
+                paint
             )
         }
     }
@@ -212,25 +204,33 @@ fun TypeWasteGraph(
         val barWidth = 50.dp
         val barSpacing = 50.dp
 
-        val typeAmounts = typeWasteEntries.mapValues { it.value.sumOf { it.amount } }
-        val maxTypeAmount = typeAmounts.values.maxOfOrNull { it } ?: 0.0
+        val typeAmounts = typeWasteEntries.mapValues { it.value.sumOf { entry -> entry.amount } }
+        val maxTypeAmount = typeAmounts.values.maxOrNull() ?: 0.0
+
+        val paint = Paint().apply {
+            color = android.graphics.Color.BLACK
+            textSize = 12.sp.toPx()
+        }
 
         typeAmounts.toList().forEachIndexed { index, (type, amount) ->
-            val barHeight = (amount / maxTypeAmount) * (size.height - 250)
-            val barX = (index * (barWidth + barSpacing)).toPx() + (barSpacing.toPx() / 2)
+            val graphHeight = size.height - 250
+            val barHeight = if (maxTypeAmount > 0) {
+                ((amount / maxTypeAmount) * graphHeight).toFloat()
+            } else 0f
+            // FIXED: Line 221 - Properly convert index to Float
+            val barX = (index.toFloat() * (barWidth.toPx() + barSpacing.toPx())) + (barSpacing.toPx() / 2)
             val barY = size.height - barHeight - 200
 
-            // Define a gradient brush for the type waste bar
             val typeWasteGradient = Brush.linearGradient(
-                colors = listOf(Color(0xFFC7B8EA), Color(0xFF7A288A)), // Violet gradient
+                colors = listOf(Color(0xFFC7B8EA), Color(0xFF7A288A)),
                 start = Offset(0f, 0f),
                 end = Offset(size.width.toFloat(), 0f)
             )
 
             drawRect(
                 brush = typeWasteGradient,
-                topLeft = Offset(barX, barY.toFloat()),
-                size = Size(barWidth.toPx(), barHeight.toFloat())
+                topLeft = Offset(barX, barY),
+                size = Size(barWidth.toPx(), barHeight)
             )
 
             // Draw amount label
@@ -238,10 +238,7 @@ fun TypeWasteGraph(
                 String.format("%.2f", amount),
                 barX,
                 (barY - 30).toFloat(),
-                android.graphics.Paint().apply {
-                    color = android.graphics.Color.BLACK
-                    textSize = 12.sp.toPx()
-                }
+                paint
             )
 
             // Draw type label
@@ -249,10 +246,7 @@ fun TypeWasteGraph(
                 type,
                 barX,
                 size.height - 120,
-                android.graphics.Paint().apply {
-                    color = android.graphics.Color.BLACK
-                    textSize = 12.sp.toPx()
-                }
+                paint
             )
         }
     }
@@ -260,8 +254,12 @@ fun TypeWasteGraph(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun StatisticsScreen(modifier: Modifier = Modifier, navController: NavController, viewModel: WasteEntryListViewModel, authViewModel: AuthViewModel) {
-    val authState by authViewModel.authstate.observeAsState()
+fun StatisticsScreen(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    viewModel: WasteEntryListViewModel,
+    authViewModel: AuthViewModel
+) {
     val wasteEntries by viewModel.wasteEntries.observeAsState(emptyList())
     val context = LocalContext.current
 
@@ -283,14 +281,19 @@ fun StatisticsScreen(modifier: Modifier = Modifier, navController: NavController
 
             // Group waste entries by month and type
             val dateFormat = DateTimeFormatterBuilder()
-                .appendPattern("M/d/yyyy") // Allows single digit for month and day
-                .parseDefaulting(ChronoField.MONTH_OF_YEAR, 1) // Default month if not provided
-                .parseDefaulting(ChronoField.DAY_OF_MONTH, 1) // Default day if not provided
-                .toFormatter() // Revised code
+                .appendPattern("M/d/yyyy")
+                .parseDefaulting(ChronoField.MONTH_OF_YEAR, 1)
+                .parseDefaulting(ChronoField.DAY_OF_MONTH, 1)
+                .toFormatter()
             monthlyWasteEntries = wasteEntries.groupBy {
-                val date = LocalDate.parse(it.date, dateFormat)
-                date.month.name
+                try {
+                    val date = LocalDate.parse(it.date, dateFormat)
+                    date.month.name
+                } catch (e: Exception) {
+                    "Unknown"
+                }
             }.mapValues { it.value }
+
             typeWasteEntries = wasteEntries.groupBy { it.type }.mapValues { it.value }
         }
     }
@@ -300,17 +303,15 @@ fun StatisticsScreen(modifier: Modifier = Modifier, navController: NavController
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp) // Padding around the box
-                    .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)) // alternate color code, .background(color = Color(0xFFE6E6FA))
-                    .padding(16.dp) // Inner padding for the content
+                    .padding(16.dp)
+                    .background(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+                    .padding(16.dp)
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(text = " ")
-                    Text(text = " ")
-                    Text(text = " ")
                     Text(text = "Statistics", fontSize = 30.sp, fontWeight = FontWeight.Bold)
 
                     Spacer(modifier = Modifier.height(10.dp))
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
@@ -319,6 +320,7 @@ fun StatisticsScreen(modifier: Modifier = Modifier, navController: NavController
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
@@ -327,12 +329,15 @@ fun StatisticsScreen(modifier: Modifier = Modifier, navController: NavController
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Text("Top Waste Type: $topWasteType", fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
                     }
+
+                    Spacer(modifier = Modifier.height(10.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -343,7 +348,6 @@ fun StatisticsScreen(modifier: Modifier = Modifier, navController: NavController
                 }
             }
         }
-
 
         item {
             Spacer(modifier = Modifier.height(20.dp))
@@ -363,12 +367,17 @@ fun StatisticsScreen(modifier: Modifier = Modifier, navController: NavController
 
         item {
             Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                monthlyWasteEntries.forEach { (month, entries) ->
-                    Text(text = "Monthly Waste for $month:")
-                    MonthlyWasteGraph(
-                        modifier = Modifier.fillMaxWidth(),
-                        monthlyWasteEntries = mapOf(month to entries)
-                    )
+                if (monthlyWasteEntries.isNotEmpty()) {
+                    monthlyWasteEntries.forEach { (month, entries) ->
+                        Text(text = "Monthly Waste for $month:", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        MonthlyWasteGraph(
+                            modifier = Modifier.fillMaxWidth(),
+                            monthlyWasteEntries = mapOf(month to entries)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                } else {
+                    Text(text = "No monthly waste data available", textAlign = TextAlign.Center)
                 }
             }
         }
@@ -379,15 +388,19 @@ fun StatisticsScreen(modifier: Modifier = Modifier, navController: NavController
 
         item {
             Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                typeWasteEntries.forEach { (type, entries) ->
-                    Text(text = "Waste for $type:")
-                    TypeWasteGraph(
-                        modifier = Modifier.fillMaxWidth(),
-                        typeWasteEntries = mapOf(type to entries)
-                    )
+                if (typeWasteEntries.isNotEmpty()) {
+                    typeWasteEntries.forEach { (type, entries) ->
+                        Text(text = "Waste for $type:", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        TypeWasteGraph(
+                            modifier = Modifier.fillMaxWidth(),
+                            typeWasteEntries = mapOf(type to entries)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                } else {
+                    Text(text = "No waste type data available", textAlign = TextAlign.Center)
                 }
             }
         }
     }
 }
-

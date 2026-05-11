@@ -44,7 +44,8 @@ fun WasteTracker(
     viewModel: WasteEntryListViewModel,
     authViewModel: AuthViewModel
 ) {
-    val authState = authViewModel.authstate.observeAsState()
+    // FIXED: Use authState instead of authstate
+    val authState by authViewModel.authState.collectAsState()
     val wasteEntries by viewModel.wasteEntries.observeAsState(listOf())
     val context = LocalContext.current
 
@@ -57,8 +58,9 @@ fun WasteTracker(
 
     val datePickerState = rememberDatePickerState()
 
-    LaunchedEffect(authState.value) {
-        when (authState.value) {
+    // FIXED: Use authState directly instead of authState.value
+    LaunchedEffect(authState) {
+        when (authState) {
             is AuthState.Unauthenticated -> navController.navigate("login")
             else -> Unit
         }
@@ -148,7 +150,7 @@ fun WasteTracker(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        TextField(
+        OutlinedTextField(
             value = amount,
             onValueChange = { amount = it },
             label = { Text("Amount in kg") },
@@ -164,14 +166,22 @@ fun WasteTracker(
                 .width(180.dp)
                 .height(50.dp),
             onClick = {
-                val newWasteEntry = WasteEntry(
-                    id = "",
-                    date = "${date.monthValue}/${date.dayOfMonth}/${date.year}",
-                    type = type,
-                    amount = amount.toDoubleOrNull() ?: 0.0
-                )
-                viewModel.addWasteEntry(newWasteEntry)
-                showToast = true
+                val amountValue = amount.toDoubleOrNull()
+                if (amountValue != null && type.isNotEmpty()) {
+                    val newWasteEntry = WasteEntry(
+                        id = "",
+                        date = "${date.monthValue}/${date.dayOfMonth}/${date.year}",
+                        type = type,
+                        amount = amountValue
+                    )
+                    viewModel.addWasteEntry(newWasteEntry)
+                    showToast = true
+                    // Clear the input fields after adding
+                    amount = ""
+                    type = ""
+                } else {
+                    Toast.makeText(context, "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
+                }
             }
         ) {
             Text(text = "Add Waste Entry", fontSize = 15.sp)

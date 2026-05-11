@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.google.gms.google.services)
 }
 
-
 android {
     namespace = "com.example.ecocafeconnect"
     compileSdk = 34
@@ -52,7 +51,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -71,6 +69,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,8 +77,13 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Additional dependencies (not in version catalog)
     implementation("com.google.zxing:core:3.5.1")
     implementation("androidx.compose.ui:ui:1.5.0")
-    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
-
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.google.android.gms:play-services-auth:21.5.1")
+    implementation("com.facebook.android:facebook-login:16.3.0")
+    implementation("com.facebook.android:facebook-android-sdk:16.3.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
 }

@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Eco Cafe Connect</string>
+    <string name="app_name">EcoCafeConnect</string>
+
+    <!-- Facebook Configuration -->
+    <string name="facebook_app_id">YOUR_FACEBOOK_APP_ID</string>
+    <string name="facebook_client_token">YOUR_FACEBOOK_CLIENT_TOKEN</string>
+    <string name="fb_login_protocol_scheme">fbYOUR_FACEBOOK_APP_ID</string>
+
+    <string name="default_web_client_id">YOUR_GOOGLE_WEB_CLIENT_ID</string>
 </resources>
